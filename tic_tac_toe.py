@@ -22,20 +22,8 @@ def main():
     # game
     while won == False:
         
-        # forcing user to give proper input, before the program continues
-        while True:
-            try:
-                p1_input = int(input("Player 1: where would you like to place your X? "))
-            except ValueError:
-                print("Try again; make sure you type an integer from 1-9 and there is nothing already in the square.")
-                continue
-            if p1_input < 10 and squares[p1_input - 1] == False:
-                break
-            else:
-                print("Try again; make sure you type an integer from 1-9 and there is nothing already in the square.")
-                continue
-
-
+        p1_input = get_input("x", squares)
+        
         # proper input was given
         squares[p1_input - 1] = True
         p1_moves.append(p1_input)
@@ -46,8 +34,6 @@ def main():
         winning_combo = win_test(p1_moves, win_conditions)    # if there is a winning combo the index will be returned
         if winning_combo != -1:
             won = True
-
-        if won == True:
             print("p1 wins")
             draw_win(win_conditions[winning_combo], winning_combo)
             break
@@ -57,20 +43,9 @@ def main():
         if turns == 9:
             print("Tie")
             break
-
-        while True:
-            try:
-                p2_input = int(input("Player 2: where would you like to place your O? "))
-            except ValueError:
-                print("Try again; make sure you type an integer from 1-9 and there is nothing already in the square.")
-                continue
-            if p2_input < 10 and squares[p2_input - 1] == False:
-                break
-            else:
-                print("Try again; make sure you type an integer from 1-9 and there is nothing already in the square.")
-                continue
-
-
+        
+        p2_input = get_input("o", squares)
+    
         # proper input was given
         squares[p2_input - 1] = True
         p2_moves.append(p2_input)
@@ -82,9 +57,6 @@ def main():
         winning_combo = win_test(p2_moves, win_conditions)    # if there is a winning combo the index will be returned
         if winning_combo != -1:
             won = True
-
-        
-        if won == True:
             print("p2 wins")
             draw_win(win_conditions[winning_combo], winning_combo)
             break
@@ -121,6 +93,22 @@ def setup_board():
     pendown()
     forward(600)
 
+def get_input(letter, squares):
+    player_input = -1
+    number = 1 if letter == "x" else 2  # player number (using cool ternary assignment)
+    
+    # forcing user to give proper input, before the program continues
+    while True:
+        try:
+            player_input = int(input(f"Player {number}: where would you like to place your {letter.upper()}? "))
+        except ValueError:
+            print("Try again; make sure you type an integer from 1-9 and there is nothing already in the square.")
+            continue
+        if 0 < player_input < 10 and squares[player_input - 1] == False:
+            return player_input
+        else:
+            print("Try again; make sure you type an integer from 1-9 and there is nothing already in the square.")
+            continue
 
 def square_draw(square_number, letter):
     if letter == "o":
