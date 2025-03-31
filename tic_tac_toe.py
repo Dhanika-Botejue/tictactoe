@@ -21,64 +21,68 @@ def main():
 
     # game
     while won == False:
-        try:
-            p1_input = int(input("Player 1: where would you like to place your X? "))
-        except ValueError:
-            print("Try again; make sure you type an integer from 1-9 and there is nothing already in the square.")
-            continue
-
-        # Valid move
-        if p1_input < 10 and squares[p1_input - 1] == False:
-            squares[p1_input - 1] = True
-            p1_moves.append(p1_input)
-            turns += 1
-            square_draw(p1_input - 1, "x")
-            
-            # test for win
-            winning_combo = win_test(p1_moves, win_conditions)    # if there is a winning combo the index will be returned
-            if winning_combo != -1:
-                won = True
-
-            if won == True:
-                print("p1 wins")
-                draw_win(win_conditions[winning_combo], winning_combo)
+        
+        # forcing user to give proper input, before the program continues
+        while True:
+            try:
+                p1_input = int(input("Player 1: where would you like to place your X? "))
+            except ValueError:
+                print("Try again; make sure you type an integer from 1-9 and there is nothing already in the square.")
+                continue
+            if p1_input < 10 and squares[p1_input - 1] == False:
                 break
+            else:
+                print("Try again; make sure you type an integer from 1-9 and there is nothing already in the square.")
+                continue
+
+
+        # proper input was given
+        squares[p1_input - 1] = True
+        p1_moves.append(p1_input)
+        turns += 1
+        square_draw(p1_input - 1, "x")
+        
+        # test for win
+        winning_combo = win_test(p1_moves, win_conditions)    # if there is a winning combo the index will be returned
+        if winning_combo != -1:
+            won = True
+
+        if won == True:
+            print("p1 wins")
+            draw_win(win_conditions[winning_combo], winning_combo)
+            break
                     
         
-        # Invalid move
-        else:
-            print("Try again; make sure you type an integer from 1-9 and there is nothing already in the square.")
-            continue
-        
-        # All squares filled
+        # All squares filled; tie
         if turns == 9:
             print("Tie")
             break
 
+        while True:
+            try:
+                p2_input = int(input("Player 2: where would you like to place your O? "))
+            except ValueError:
+                print("Try again; make sure you type an integer from 1-9 and there is nothing already in the square.")
+                continue
+            if p2_input < 10 and squares[p2_input - 1] == False:
+                break
+            else:
+                print("Try again; make sure you type an integer from 1-9 and there is nothing already in the square.")
+                continue
 
-        try:
-            p2_input = int(input("Player 2: where would you like to place your O? "))
-        except ValueError:
-            print("Try again; make sure you type an integer from 1-9 and there is nothing already in the square.")
-            continue
 
-        # Valid move
-        if p2_input < 10 and squares[p2_input - 1] == False:
-            squares[p2_input - 1] = True
-            p2_moves.append(p2_input)
-            turns += 1
-            
-            square_draw((p2_input - 1), "o")
-            
-            # test for win
-            winning_combo = win_test(p2_moves, win_conditions)    # if there is a winning combo the index will be returned
-            if winning_combo != -1:
-                won = True
+        # proper input was given
+        squares[p2_input - 1] = True
+        p2_moves.append(p2_input)
+        turns += 1
+        
+        square_draw((p2_input - 1), "o")
+        
+        # test for win
+        winning_combo = win_test(p2_moves, win_conditions)    # if there is a winning combo the index will be returned
+        if winning_combo != -1:
+            won = True
 
-        # Invalid move
-        else:
-            print("Try again; make sure you type an integer from 1-9 and there is nothing already in the square.")
-            continue
         
         if won == True:
             print("p2 wins")
