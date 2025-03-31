@@ -49,8 +49,7 @@ def main():
         # proper input was given
         squares[p2_input - 1] = True
         p2_moves.append(p2_input)
-        turns += 1
-        
+        turns += 1 
         square_draw((p2_input - 1), "o")
         
         # test for win
